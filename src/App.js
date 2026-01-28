@@ -13,10 +13,16 @@ import Wishlist from "./pages/Wishlist";
 import Orders from "./pages/Orders";
 import Contact from "./pages/Contact";
 import Help from "./pages/Help";
+import SignIn from "./pages/SignUp";
+import Payment from "./pages/Payment";
+import Profile from "./pages/Profile";
 
 function App() {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [isSignedIn, setIsSignedIn] = useState(
+    () => localStorage.getItem("nykaa_auth") === "true"
+  );
 
   const handleToggleWishlist = (product) => {
     setWishlistItems((prev) => {
@@ -68,9 +74,19 @@ function App() {
     [cartItems]
   );
 
+  const handleSignedIn = () => {
+    localStorage.setItem("nykaa_auth", "true");
+    setIsSignedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("nykaa_auth");
+    setIsSignedIn(false);
+  };
+
   return (
     <>
-      <Navbar cartCount={cartCount} />
+      <Navbar cartCount={cartCount} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route
@@ -90,8 +106,16 @@ function App() {
               cartItems={cartItems}
               onRemoveFromCart={handleRemoveFromCart}
               onUpdateCartQty={handleUpdateCartQty}
+              isSignedIn={isSignedIn}
             />
           }
+        />
+      
+        <Route path="/signin" element={<SignIn onSignedIn={handleSignedIn} />} />
+        <Route path="/signup" element={<SignIn onSignedIn={handleSignedIn} />} />
+        <Route
+          path="/payment"
+          element={<Payment isSignedIn={isSignedIn} />}
         />
         <Route
           path="/wishlist"
@@ -105,6 +129,7 @@ function App() {
         <Route path="/orders" element={<Orders />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/help" element={<Help />} />
+        <Route path="/profile" element={<Profile />} />
         <Route
           path="/makeup"
           element={
