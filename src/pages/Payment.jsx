@@ -58,7 +58,8 @@ export default function Payment({ isSignedIn }) {
     e.preventDefault();
     if (!validate()) return;
 
-    const userEmail = form.email || localStorage.getItem("userEmail");
+  const userEmail = localStorage.getItem("userEmail");
+
     if (!userEmail) {
       alert("Email is missing!");
       return;

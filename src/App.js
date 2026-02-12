@@ -65,9 +65,7 @@ function App() {
     );
   };
 
-  const handleRemoveFromWishlist = (id) => {
-    setWishlistItems((prev) => prev.filter((item) => item.id !== id));
-  };
+
 
   const cartCount = useMemo(
     () => cartItems.reduce((sum, item) => sum + item.qty, 0),
